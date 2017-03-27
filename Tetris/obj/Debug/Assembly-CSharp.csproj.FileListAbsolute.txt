@@ -1,0 +1,1 @@
+C:\Users\Christer\LearningUnity\Tetris\obj\Debug\Assembly-CSharp.csprojResolveAssemblyReference.cache
