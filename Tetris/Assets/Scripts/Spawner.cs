@@ -11,7 +11,7 @@ public class Spawner : MonoBehaviour {
         SpawnNext();
     }
 
-    private void SpawnNext() {
+    public void SpawnNext() {
         int i = Random.Range(0, Groups.Length);
         Instantiate(Groups[i], transform.position, Quaternion.identity);
     }
