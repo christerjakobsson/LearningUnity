@@ -57,7 +57,7 @@ public class Grid : MonoBehaviour {
 			if (grid [x, y] == null)
 				return false;
 		}
-		Debug.Log ("ROWISFULL");
+
 		return true;
 	}
 

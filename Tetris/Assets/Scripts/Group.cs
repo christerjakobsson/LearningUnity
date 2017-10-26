@@ -6,17 +6,21 @@ public class Group : MonoBehaviour {
 
 	// Time since last gravity tick
 	float lastFall = 0;
+	public bool isActive = false;
 
 	// Use this for initialization
 	void Start () {
-		if (!IsValidGridPos()) {
+		if (isActive && !IsValidGridPos()) {
 			Debug.Log("GAME OVER");
 			Destroy(gameObject);
 		}
 	}
 	
 	// Update is called once per frame
-	void Update () {	
+	void Update () {			
+		if (!isActive) {
+			return;
+		}
 		if (Input.GetKeyDown (KeyCode.LeftArrow)) {
 			transform.position += new Vector3 (-1, 0, 0);
 
