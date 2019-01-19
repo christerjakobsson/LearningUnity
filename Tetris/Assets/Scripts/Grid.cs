@@ -1,22 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Grid : MonoBehaviour {
 
     public static int w = 10;
     public static int h = 20;
     public static Transform[,] grid = new Transform[w,h];
+    public static int Level = 0;
+    private static int MaxLevel = 10;
+    public static int Score { get; set; }
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+    // Use this for initialization
+    void Start () {
+  
+    }
 
     public static Vector2 RoundVector2(Vector2 v) {
         return new Vector2(Mathf.Round(v.x), Mathf.Round(v.y));
@@ -61,13 +60,48 @@ public class Grid : MonoBehaviour {
 		return true;
 	}
 
-	public static void deleteFullRows() {
+	public static int DeleteFullRows() {
+        int count = 0;
 		for (int y = 0; y < h; ++y) {
 			if(IsRowFull(y)) {
+                count++;
 				DeleteRow (y);
 				DecreaseRowsAbove(y + 1);
 				--y;
 			}
 		}
-	}
+        if(count > 0) {
+            CalculateScore(count);
+        }
+
+        return count;
+    }
+
+    private static void CalculateScore(int count) {
+        if (count <= 0)
+            return;
+            //  40 * (n + 1)    100 * (n + 1)   300 * (n + 1)   1200 * (n + 1)
+        var point = 40;
+        switch(count) {
+            case 1:
+                point = 40;
+                break;
+            case 2:
+                point = 100;
+                break;
+            case 3:
+                point = 300;
+                break;
+            case 4:
+                point = 1200;
+                break;
+        }
+        var sum = point * (Level + 1);
+        Score += point * (Level + 1);
+
+    }
+
+    internal static bool IsMaxLevel() {
+        return Level == MaxLevel;
+    }
 }

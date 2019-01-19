@@ -1,15 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class Spawner : MonoBehaviour {
 
     public GameObject[] Groups;
-	public GameObject NextGroup = null;
+	public GameObject NextGroup;
 
     // Use this for initialization
     void Start() {
-        SpawnNext();
+        SpawnNext(); 
     }
 
     public void SpawnNext() {

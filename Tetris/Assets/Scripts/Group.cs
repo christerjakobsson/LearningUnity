@@ -1,15 +1,25 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class Group : MonoBehaviour {
 
-	// Time since last gravity tick
-	float lastFall = 0;
-	public bool isActive = false;
+    // Time since last gravity tick
+    public Text scoreText;
+    public bool isActive = false;
 
-	// Use this for initialization
-	void Start () {
+    private float lastFall = 0;
+    private float speed = 1;
+
+    private float startTime;
+    private float TimeOnLevel = 30;
+
+    public void Awake() {
+        scoreText = GameObject.Find("scoreText").GetComponent<Text>();
+    }
+
+    // Use this for initialization
+    void Start () {
+        startTime = Time.time;
 		if (isActive && !IsValidGridPos()) {
 			Debug.Log("GAME OVER");
 			Destroy(gameObject);
@@ -46,7 +56,7 @@ public class Group : MonoBehaviour {
 			else
 				transform.Rotate (0, 0, 90);
 		} else if (Input.GetKeyDown(KeyCode.DownArrow) ||
-			Time.time - lastFall >= 1) {
+			Time.time - lastFall >= speed - (Grid.Level*0.1)) {
 			// Modify position
 			transform.position += new Vector3(0, -1, 0);
 
@@ -59,10 +69,12 @@ public class Group : MonoBehaviour {
 				transform.position += new Vector3(0, 1, 0);
 
 				// Clear filled horizontal lines
-				Grid.deleteFullRows();
-
-				// Spawn next Group
-				FindObjectOfType<Spawner>().SpawnNext();
+				var deletedRows = Grid.DeleteFullRows();
+                if(deletedRows > 0) {
+                    scoreText.text = "Score: " + Grid.Score;
+                }
+                // Spawn next Group
+                FindObjectOfType<Spawner>().SpawnNext();
 
 				// Disable script
 				enabled = false;
@@ -70,7 +82,12 @@ public class Group : MonoBehaviour {
 
 			lastFall = Time.time;
 		}
-	}
+
+        if(Grid.IsMaxLevel() == false && Time.time - startTime > TimeOnLevel) {
+            Grid.Level++;
+            startTime = Time.time;
+        }
+    }
 
 	bool IsValidGridPos() {
 		foreach (Transform child in transform) {
