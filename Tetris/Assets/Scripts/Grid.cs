@@ -7,8 +7,8 @@ public class Grid : MonoBehaviour {
     public static int w = 10;
     public static int h = 20;
     public static Transform[,] grid = new Transform[w,h];
-    public static int Level = 0;
-    private static int MaxLevel = 10;
+    public static int Level;
+    private static readonly int MaxLevel = 10;
     public static int Score { get; set; }
 
 

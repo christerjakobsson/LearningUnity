@@ -5,16 +5,20 @@ public class Group : MonoBehaviour {
 
     // Time since last gravity tick
     public Text scoreText;
+    public Text levelText;
+
     public bool isActive = false;
 
-    private float lastFall = 0;
-    private float speed = 1;
+    private float lastFall;
+    private readonly float speed = 1;
 
     private float startTime;
-    private float TimeOnLevel = 30;
+    private readonly float TimeOnLevel = 30;
 
     public void Awake() {
         scoreText = GameObject.Find("scoreText").GetComponent<Text>();
+        levelText = GameObject.Find("levelText").GetComponent<Text>();
+        levelText.text = $"Level: {Grid.Level}";
     }
 
     // Use this for initialization
@@ -71,7 +75,7 @@ public class Group : MonoBehaviour {
 				// Clear filled horizontal lines
 				var deletedRows = Grid.DeleteFullRows();
                 if(deletedRows > 0) {
-                    scoreText.text = "Score: " + Grid.Score;
+                    scoreText.text = $"Score: {Grid.Score}";
                 }
                 // Spawn next Group
                 FindObjectOfType<Spawner>().SpawnNext();
@@ -86,6 +90,7 @@ public class Group : MonoBehaviour {
         if(Grid.IsMaxLevel() == false && Time.time - startTime > TimeOnLevel) {
             Grid.Level++;
             startTime = Time.time;
+            levelText.text = $"Level: {Grid.Level}";
         }
     }
 
